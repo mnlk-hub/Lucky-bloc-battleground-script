@@ -149,7 +149,7 @@ end
 -- Création des boutons
 local button1 = createButton("Infinite Jump: off", UDim2.new(0, 50, 0, 50))
 local button2 = createButton("Clear inventory", UDim2.new(0, 150, 0, 50))
-local button3 = createButton("Bouton 3", UDim2.new(0, 250, 0, 50))
+local button3 = createButton("Give galaxy LuckyBlock", UDim2.new(0, 250, 0, 50))
 
 -- Création des TextBox
 local textBox1 = createTextBox(UDim2.new(0, 100, 0, 100))
@@ -211,7 +211,12 @@ button2.MouseButton1Click:Connect(function()
 end)
 
 button3.MouseButton1Click:Connect(function()
-	print("Bouton 3 cliqué")
+	button3.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	button3.Text = "galaxy LuckyBlock Gived"
+	game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+	task.wait(.5)
+	button3.BackgroundColor3 = Color3.fromRGB(179, 0, 0)
+	button3.Text = "Give galaxy LuckyBlock"
 end)
 
 -- Fonction pour activer le glisser-déposer
