@@ -148,7 +148,7 @@ end
 
 -- Création des boutons
 local button1 = createButton("Infinite Jump: off", UDim2.new(0, 50, 0, 50))
-local button2 = createButton("Bouton 2", UDim2.new(0, 150, 0, 50))
+local button2 = createButton("Clear inventory", UDim2.new(0, 150, 0, 50))
 local button3 = createButton("Bouton 3", UDim2.new(0, 250, 0, 50))
 
 -- Création des TextBox
@@ -200,7 +200,14 @@ button1.MouseButton1Click:Connect(function()
 end)
 
 button2.MouseButton1Click:Connect(function()
-	print("Bouton 2 cliqué")
+	button2.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	for _,v in game.Players.LocalPlayer.Backpack:GetChildren() do
+		v:Destroy()
+	end
+	button2.Text = "Inventory cleared"
+	task.wait(.5)
+	button2.BackgroundColor3 = Color3.fromRGB(179, 0, 0)
+	button2.Text = "Clear inventory"
 end)
 
 button3.MouseButton1Click:Connect(function()
@@ -245,3 +252,4 @@ game["Run Service"].Heartbeat:Connect(function()
 	cooldown = false
 	end
 end)
+
