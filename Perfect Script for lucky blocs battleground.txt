@@ -1,0 +1,247 @@
+--Touches
+local touch = 0
+local touch2 = 0
+local touch3 = 0
+local touch4 = 0
+--Booleans
+local InfiniteJumpOn = false
+local isDragging = false
+local dragOffset
+local HubName = "mnlk Hub"
+local GameName = "Lucky Block Battle Ground"
+local FirstTime = false
+-- Créer l'interface principale
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local uis = game.UserInputService
+
+-- Propriétés de l'interface principale
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+local sound = Instance.new("Sound",game.Players.LocalPlayer.Character)
+sound.SoundId = "rbxassetid://8486683243"
+sound.Volume = 10
+sound:Play()
+
+if not FirstTime then
+game.StarterGui:SetCore("SendNotification", {
+	Title = "Code well injected"; 
+	Text = "Welcome to "..HubName.."💉😈"; 
+	Duration = 5;
+})
+FirstTime = true
+end
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- Fond noir/gris foncé
+MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+
+-- Ajouter un coin arrondi à MainFrame
+local mainCorner = Instance.new("UICorner")
+mainCorner.CornerRadius = UDim.new(0, 10)
+mainCorner.Parent = MainFrame
+
+
+
+-- Ajouter un label pour le titre "mnlk Hub"
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Parent = MainFrame
+titleLabel.Size = UDim2.new(1, 0, 0, 50)
+titleLabel.Position = UDim2.new(0, 0, -0.15, 0)
+titleLabel.BackgroundTransparency = 1  -- Fond transparent
+titleLabel.TextColor3 = Color3.fromRGB(115, 0, 255)  -- Texte blanc
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextScaled = true
+titleLabel.Text = HubName
+titleLabel.Name = "Title"
+
+local titleLabel2 = Instance.new("TextLabel")
+titleLabel2.Parent = MainFrame
+titleLabel2.Size = UDim2.new(1, 0, 0, 25)
+titleLabel2.Position = UDim2.new(0, 0,.06, 0)
+titleLabel2.BackgroundTransparency = 1  -- Fond transparent
+titleLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Texte blanc
+titleLabel2.Font = Enum.Font.SourceSansBold
+titleLabel2.TextScaled = true
+titleLabel2.Text = GameName
+titleLabel2.TextColor3 = Color3.new(0, 0, 0)
+
+local uistroke = Instance.new("UIStroke",titleLabel)
+uistroke.Thickness = 3
+
+local uistroke3 = Instance.new("UIStroke",titleLabel2)
+uistroke3.Thickness = 3
+uistroke3.Color = Color3.new(1, 0, 0)
+
+local textButton = Instance.new("TextButton")
+textButton.Parent = MainFrame
+textButton.Size = UDim2.new(0.1, 0,0, 35)
+textButton.Position = UDim2.new(.9, 0,0, 0)
+textButton.BackgroundTransparency = 1
+textButton.Text = "X"
+textButton.TextScaled = true
+textButton.TextColor3 = Color3.new(255)
+textButton.Name = "Cross"
+
+local uistroke2 = Instance.new("UIStroke",textButton)
+uistroke2.Thickness = 3
+
+textButton.MouseButton1Click:Connect(function()
+	touch4 += 1
+	if touch4 == 1 then
+		for _,v in ScreenGui.Frame:GetChildren() do
+			if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
+				v.Visible = false
+			end
+		end
+		game.TweenService:Create(ScreenGui.Frame,TweenInfo.new(0.3,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Size = UDim2.new(0, 400,0, 40)}):Play()
+	else
+		touch4 = 0
+		local tween = game.TweenService:Create(ScreenGui.Frame,TweenInfo.new(0.3,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Size = UDim2.new(0, 400,0, 300)})
+		tween:Play()
+		tween.Completed:Connect(function()
+			for _,v in ScreenGui.Frame:GetChildren() do
+				if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
+					v.Visible = true
+				end
+			end
+		end)
+	end
+end)
+
+-- Fonction pour styliser les boutons
+local function createButton(text, position)
+	local button = Instance.new("TextButton")
+	button.Parent = MainFrame
+	button.Size = UDim2.new(0, 100, 0, 40)
+	button.Position = position
+	button.BackgroundColor3 = Color3.fromRGB(179, 0, 0)  -- Rouge sombre
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Texte blanc
+	button.Font = Enum.Font.SourceSansBold
+	button.TextScaled = true
+	button.Text = text
+	return button
+end
+
+-- Fonction pour créer les TextBox
+local function createTextBox(position)
+	local textBox = Instance.new("TextBox")
+	textBox.Parent = MainFrame
+	textBox.Size = UDim2.new(0, 200, 0, 40)
+	textBox.Position = position
+	textBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Fond gris foncé
+	textBox.TextColor3 = Color3.fromRGB(179, 0, 0)  -- Texte rouge
+	textBox.Font = Enum.Font.SourceSans
+	textBox.TextScaled = true
+	textBox.Text = ""
+	textBox.TextStrokeTransparency = 0
+	
+	-- Ajouter un coin arrondi à la TextBox
+	local textBoxCorner = Instance.new("UICorner")
+	textBoxCorner.CornerRadius = UDim.new(0, 10)
+	textBoxCorner.Parent = textBox
+
+	return textBox
+end
+
+-- Création des boutons
+local button1 = createButton("Infinite Jump: off", UDim2.new(0, 50, 0, 50))
+local button2 = createButton("Bouton 2", UDim2.new(0, 150, 0, 50))
+local button3 = createButton("Bouton 3", UDim2.new(0, 250, 0, 50))
+
+-- Création des TextBox
+local textBox1 = createTextBox(UDim2.new(0, 100, 0, 100))
+local textBox2 = createTextBox(UDim2.new(0, 100, 0, 150))
+
+local WalkSpeed = 16
+local JumpPower = 60
+
+local function RefreshSpeedAndJumpPower()
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeed
+	game.Players.LocalPlayer.Character.Humanoid.JumpPower = JumpPower
+end
+textBox1:GetPropertyChangedSignal("Text"):Connect(function()
+	if  tonumber(textBox1.Text) then
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = textBox1.Text
+		WalkSpeed = textBox1.Text
+	end
+end)
+
+textBox2:GetPropertyChangedSignal("Text"):Connect(function()
+	if  tonumber(textBox2.Text) then
+		game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = textBox2.Text
+		JumpPower = textBox2.Text
+	end
+end)
+
+textBox1.Text = "The number you put is your speed"
+textBox2.Text = "The number you put is your Jump Force"
+
+game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
+	task.wait(5.5)
+	RefreshSpeedAndJumpPower()
+end)
+-- Ajout des actions pour les boutons
+button1.MouseButton1Click:Connect(function()
+	touch += 1
+	if touch == 1 then
+		button1.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+		button1.Text = "Infinite Jump: on"
+		InfiniteJumpOn = true
+	else
+		button1.BackgroundColor3 = Color3.fromRGB(179, 0, 0) 
+		button1.Text = "Infinite Jump: off"
+		InfiniteJumpOn = false
+		touch = 0
+	end
+end)
+
+button2.MouseButton1Click:Connect(function()
+	print("Bouton 2 cliqué")
+end)
+
+button3.MouseButton1Click:Connect(function()
+	print("Bouton 3 cliqué")
+end)
+
+-- Fonction pour activer le glisser-déposer
+titleLabel.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		isDragging = true
+		dragOffset = Vector2.new(input.Position.X, input.Position.Y) - MainFrame.AbsolutePosition
+	end
+end)
+
+titleLabel.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		isDragging = false
+	end
+end)
+
+uis.InputChanged:Connect(function(input)
+	if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		if dragOffset then
+			MainFrame.Position = UDim2.new(0, input.Position.X - dragOffset.X, 0, input.Position.Y - dragOffset.Y)
+		end
+	end
+end)
+
+game:GetService("UserInputService").JumpRequest:Connect(function()
+	if InfiniteJumpOn then
+		game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+	end
+end)
+
+local cooldown = false
+
+game["Run Service"].Heartbeat:Connect(function()
+	if not cooldown then
+	RefreshSpeedAndJumpPower()
+	cooldown = true
+	task.wait()
+	cooldown = false
+	end
+end)
