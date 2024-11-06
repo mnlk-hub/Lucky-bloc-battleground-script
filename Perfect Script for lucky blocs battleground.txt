@@ -3,19 +3,21 @@ local touch = 0
 local touch2 = 0
 local touch3 = 0
 local touch4 = 0
+local Page = 1
 --Booleans
 local InfiniteJumpOn = false
+local Plied = false
 local isDragging = false
 local dragOffset
 local HubName = "mnlk Hub"
 local GameName = "Lucky Block Battle Ground"
 local FirstTime = false
--- Créer l'interface principale
+
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local uis = game.UserInputService
+MainFrame.SizeConstraint = Enum.SizeConstraint.RelativeYY
 
--- Propriétés de l'interface principale
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
@@ -24,45 +26,56 @@ sound.SoundId = "rbxassetid://8486683243"
 sound.Volume = 10
 sound:Play()
 
-if not FirstTime then
-game.StarterGui:SetCore("SendNotification", {
-	Title = "Code well injected"; 
-	Text = "Welcome to "..HubName.."💉😈"; 
-	Duration = 5;
-})
-FirstTime = true
-end
+--if not FirstTime  then
+--	game.StarterGui:SetCore("SendNotification", {
+--		Title = "Code well injected"; 
+--		Text = "Welcome to "..HubName.."💉😈"; 
+--		Duration = 5;
+--	})
+--	FirstTime = true
+--end
+
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- Fond noir/gris foncé
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  
 MainFrame.Size = UDim2.new(0, 400, 0, 300)
 MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 
--- Ajouter un coin arrondi à MainFrame
+local function CreateFolder(Name)
+	local folder = Instance.new("Folder")
+	folder.Name = Name
+	folder.Parent = MainFrame
+	return folder
+end
+
+local folder1 = CreateFolder("Page1")
+local folder2 = CreateFolder("Page2")
+
+
+
 local mainCorner = Instance.new("UICorner")
 mainCorner.CornerRadius = UDim.new(0, 10)
 mainCorner.Parent = MainFrame
 
 
 
--- Ajouter un label pour le titre "mnlk Hub"
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Parent = MainFrame
-titleLabel.Size = UDim2.new(1, 0, 0, 50)
-titleLabel.Position = UDim2.new(0, 0, -0.15, 0)
-titleLabel.BackgroundTransparency = 1  -- Fond transparent
-titleLabel.TextColor3 = Color3.fromRGB(115, 0, 255)  -- Texte blanc
+titleLabel.Size = UDim2.new(0.6, 0,0, 48)
+titleLabel.Position = UDim2.new(0.2, 0,-0.15, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextColor3 = Color3.fromRGB(115, 0, 255)  
 titleLabel.Font = Enum.Font.SourceSansBold
 titleLabel.TextScaled = true
 titleLabel.Text = HubName
 titleLabel.Name = "Title"
-
+--PAGE1
 local titleLabel2 = Instance.new("TextLabel")
-titleLabel2.Parent = MainFrame
+titleLabel2.Parent = folder1
 titleLabel2.Size = UDim2.new(1, 0, 0, 25)
 titleLabel2.Position = UDim2.new(0, 0,.06, 0)
-titleLabel2.BackgroundTransparency = 1  -- Fond transparent
-titleLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Texte blanc
+titleLabel2.BackgroundTransparency = 1 
+titleLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)  
 titleLabel2.Font = Enum.Font.SourceSansBold
 titleLabel2.TextScaled = true
 titleLabel2.Text = GameName
@@ -76,7 +89,7 @@ uistroke3.Thickness = 3
 uistroke3.Color = Color3.new(1, 0, 0)
 
 local textButton = Instance.new("TextButton")
-textButton.Parent = MainFrame
+textButton.Parent = folder1
 textButton.Size = UDim2.new(0.1, 0,0, 35)
 textButton.Position = UDim2.new(.9, 0,0, 0)
 textButton.BackgroundTransparency = 1
@@ -91,54 +104,91 @@ uistroke2.Thickness = 3
 textButton.MouseButton1Click:Connect(function()
 	touch4 += 1
 	if touch4 == 1 then
-		for _,v in ScreenGui.Frame:GetChildren() do
-			if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
-				v.Visible = false
+		if Page == 1 then
+			for _,v in ScreenGui.Frame.Page1:GetChildren() do
+				if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
+					v.Visible = false
+				end
 			end
 		end
+		if Page == 2 then
+			for _,v in ScreenGui.Frame.Page2:GetChildren() do
+				if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
+					v.Visible = false
+				end
+			end
+
+			for _,v in ScreenGui.Frame.Page1:GetChildren() do
+				if v.Name == "arrow" then
+					v.Visible = false
+				end
+			end
+
+		end
 		game.TweenService:Create(ScreenGui.Frame,TweenInfo.new(0.3,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Size = UDim2.new(0, 400,0, 40)}):Play()
+		Plied = true
 	else
 		touch4 = 0
 		local tween = game.TweenService:Create(ScreenGui.Frame,TweenInfo.new(0.3,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Size = UDim2.new(0, 400,0, 300)})
+		Plied = false
 		tween:Play()
 		tween.Completed:Connect(function()
-			for _,v in ScreenGui.Frame:GetChildren() do
-				if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
-					v.Visible = true
+
+			if Page == 1 then
+				for _,v in ScreenGui.Frame.Page1:GetChildren() do
+					if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
+						v.Visible = true
+					end
 				end
 			end
+
+			if Page == 2 then
+				for _,v in ScreenGui.Frame.Page2:GetChildren() do
+					if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" then
+						v.Visible = true
+					end
+				end
+
+				for _,v in ScreenGui.Frame.Page1:GetChildren() do
+					if v.Name == "arrow" then
+						v.Visible = true
+					end
+				end
+
+			end
+
 		end)
 	end
 end)
 
--- Fonction pour styliser les boutons
+
 local function createButton(text, position)
 	local button = Instance.new("TextButton")
-	button.Parent = MainFrame
+	button.Parent = folder1
 	button.Size = UDim2.new(0, 100, 0, 40)
 	button.Position = position
-	button.BackgroundColor3 = Color3.fromRGB(179, 0, 0)  -- Rouge sombre
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Texte blanc
+	button.BackgroundColor3 = Color3.fromRGB(179, 0, 0)  
+	button.TextColor3 = Color3.fromRGB(255, 255, 255) 
 	button.Font = Enum.Font.SourceSansBold
 	button.TextScaled = true
 	button.Text = text
 	return button
 end
 
--- Fonction pour créer les TextBox
+
 local function createTextBox(position)
 	local textBox = Instance.new("TextBox")
-	textBox.Parent = MainFrame
+	textBox.Parent = folder1
 	textBox.Size = UDim2.new(0, 200, 0, 40)
 	textBox.Position = position
-	textBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Fond gris foncé
-	textBox.TextColor3 = Color3.fromRGB(179, 0, 0)  -- Texte rouge
+	textBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50) 
+	textBox.TextColor3 = Color3.fromRGB(179, 0, 0)  
 	textBox.Font = Enum.Font.SourceSans
 	textBox.TextScaled = true
 	textBox.Text = ""
 	textBox.TextStrokeTransparency = 0
-	
-	-- Ajouter un coin arrondi à la TextBox
+
+
 	local textBoxCorner = Instance.new("UICorner")
 	textBoxCorner.CornerRadius = UDim.new(0, 10)
 	textBoxCorner.Parent = textBox
@@ -146,14 +196,18 @@ local function createTextBox(position)
 	return textBox
 end
 
--- Création des boutons
-local button1 = createButton("Infinite Jump: off", UDim2.new(0, 50, 0, 50))
-local button2 = createButton("Clear inventory", UDim2.new(0, 150, 0, 50))
-local button3 = createButton("Give galaxy LuckyBlock", UDim2.new(0, 250, 0, 50))
 
--- Création des TextBox
-local textBox1 = createTextBox(UDim2.new(0, 100, 0, 100))
-local textBox2 = createTextBox(UDim2.new(0, 100, 0, 150))
+local button1 = createButton("Infinite Jump: off", UDim2.new(0, 100, 0, 50))
+local button2 = createButton("Clear inventory", UDim2.new(0, 200, 0, 50))
+local button3 = createButton("Give galaxy LuckyBlock", UDim2.new(0, 298, 0, 100))
+local button4  = createButton("➡",UDim2.new(0, 330, 0,260))
+local button5  = createButton("⬅",UDim2.new(0, -25, 0,260))
+local button6 = createButton("Give SuperBlock", UDim2.new(0, 2, 0, 100))
+local button7 = createButton("Give DiamondBlock", UDim2.new(0, 98, 0, 100))
+local button8 = createButton("Give RainbowBlock", UDim2.new(0, 198, 0, 100))
+
+local textBox1 = createTextBox(UDim2.new(0, 100, 0, 150))
+local textBox2 = createTextBox(UDim2.new(0, 100, 0, 200))
 
 local WalkSpeed = 16
 local JumpPower = 60
@@ -162,10 +216,14 @@ local function RefreshSpeedAndJumpPower()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeed
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = JumpPower
 end
+
 textBox1:GetPropertyChangedSignal("Text"):Connect(function()
 	if  tonumber(textBox1.Text) then
 		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = textBox1.Text
 		WalkSpeed = textBox1.Text
+	elseif textBox1.Text ~= "" then
+		textBox1.Text = "The number you put is your speed"
+
 	end
 end)
 
@@ -174,6 +232,8 @@ textBox2:GetPropertyChangedSignal("Text"):Connect(function()
 		game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
 		game.Players.LocalPlayer.Character.Humanoid.JumpPower = textBox2.Text
 		JumpPower = textBox2.Text
+	elseif textBox2.Text ~= "" then
+		textBox2.Text = "The number you put is your Jump Force"
 	end
 end)
 
@@ -184,7 +244,7 @@ game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
 	task.wait(5.5)
 	RefreshSpeedAndJumpPower()
 end)
--- Ajout des actions pour les boutons
+
 button1.MouseButton1Click:Connect(function()
 	touch += 1
 	if touch == 1 then
@@ -219,11 +279,79 @@ button3.MouseButton1Click:Connect(function()
 	button3.Text = "Give galaxy LuckyBlock"
 end)
 
--- Fonction pour activer le glisser-déposer
+button4.MouseButton1Click:Connect(function()
+
+	if Page == 1 then
+		--page 2
+		Page += 1
+		for _,v in folder1:GetChildren() do
+			if v.Name ~= "UICorner" and v.Name ~= "Cross" and v.Name ~= "Title" and v.Name ~= "arrow" then
+				v.Visible = false
+			end
+		end
+
+		for _,v in folder2:GetChildren() do
+			v.Visible = true
+		end
+	end
+
+end)
+button4.TextColor3 = Color3.new(1, 0, 0)
+button4.BackgroundTransparency = 1
+button4.Name = "arrow"
+local ui3 = Instance.new("UIStroke",button4)
+ui3.Thickness = 3
+ui3.Color = Color3.new(0, 0, 0)
+
+button5.MouseButton1Click:Connect(function()
+	if Page == 2 then
+		for _,v in folder2:GetChildren() do
+			v.Visible = false
+		end
+
+		for _,v in folder1:GetChildren() do
+			v.Visible = true
+		end
+		Page -= 1
+	end
+end)
+button5.TextColor3 = Color3.new(1, 0, 0)
+button5.BackgroundTransparency = 1
+button5.Name = "arrow"
+local ui3 = Instance.new("UIStroke",button5)
+ui3.Thickness = 3
+ui3.Color = Color3.new(0, 0, 0)
+
+button6.MouseButton1Click:Connect(function()
+	button6.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	button6.Text = "SuperBlock Gived"
+	game.ReplicatedStorage.SpawnSuperBlock:FireServer()
+	task.wait(.5)
+	button6.Text = "Give SuperBlock"
+	button6.BackgroundColor3 = Color3.fromRGB(179, 0, 0)
+end)
+
+button7.MouseButton1Click:Connect(function()
+	button7.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	button7.Text = "DiamondBlock Gived"
+	game.ReplicatedStorage.SpawnDiamondBlock:FireServer()
+	task.wait(.5)
+	button7.Text = "Give DiamondBlock"
+	button7.BackgroundColor3 = Color3.fromRGB(179, 0, 0)
+end)
+
+button8.MouseButton1Click:Connect(function()
+	button8.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	button8.Text = "RainbowBlock Gived"
+	game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
+	task.wait(.5)
+	button8.Text = "Give RainbowBlock"
+	button8.BackgroundColor3 = Color3.fromRGB(179, 0, 0)
+end)
+
 titleLabel.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
 		isDragging = true
-		dragOffset = Vector2.new(input.Position.X, input.Position.Y) - MainFrame.AbsolutePosition
 	end
 end)
 
@@ -235,8 +363,10 @@ end)
 
 uis.InputChanged:Connect(function(input)
 	if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-		if dragOffset then
-			MainFrame.Position = UDim2.new(0, input.Position.X - dragOffset.X, 0, input.Position.Y - dragOffset.Y)
+		if not Plied then
+			MainFrame.Position = UDim2.new(0, game.Players.LocalPlayer:GetMouse().X,.15,game.Players.LocalPlayer:GetMouse().Y)
+		else
+			MainFrame.Position = UDim2.new(0, game.Players.LocalPlayer:GetMouse().X,0,game.Players.LocalPlayer:GetMouse().Y)
 		end
 	end
 end)
@@ -251,10 +381,235 @@ local cooldown = false
 
 game["Run Service"].Heartbeat:Connect(function()
 	if not cooldown then
-	RefreshSpeedAndJumpPower()
-	cooldown = true
-	task.wait()
-	cooldown = false
+		RefreshSpeedAndJumpPower()
+		cooldown = true
+		task.wait()
+		cooldown = false
 	end
 end)
 
+--PAGE2
+--functions
+local function createButtonPage2(text, position,name)
+	local button = Instance.new("TextButton")
+	button.Parent = folder2
+	button.Size = UDim2.new(0, 100, 0, 40)
+	button.Position = position
+	button.BackgroundColor3 = Color3.fromRGB(179, 0, 0)  
+	button.TextColor3 = Color3.fromRGB(255, 255, 255) 
+	button.Font = Enum.Font.SourceSansBold
+	button.TextScaled = true
+	button.Text = text
+	button.Name = name
+	button.Visible = false
+	button.Font = Enum.Font.SourceSansBold
+	return button
+end
+
+local function CreateTitle(text,name,Position)
+	local titleLabel2 = Instance.new("TextLabel")
+	titleLabel2.Parent = folder2
+	titleLabel2.Size = UDim2.new(1, 0, 0, 25)
+	titleLabel2.Position = Position
+	titleLabel2.BackgroundTransparency = 1 
+	titleLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)  
+	titleLabel2.Font = Enum.Font.SourceSansBold
+	titleLabel2.TextScaled = true
+	titleLabel2.Text = text
+	titleLabel2.Name = name
+	titleLabel2.TextColor3 = Color3.new(0, 0, 0)
+	titleLabel2.Visible = false
+	local StrokeUi = Instance.new("UIStroke",titleLabel2)
+	StrokeUi.Color = Color3.new(1,0,0)
+end
+
+--execute functions
+local EspTitle = CreateTitle("Esp: ","EspTitle",UDim2.new(0, 0,.06, 0)) 
+local ShowNameButton = createButtonPage2("ShowName:off",UDim2.new(0, 50, 0, 50),"ShowName")
+local ShowHitboxButton = createButtonPage2("ShowHitbox:off",UDim2.new(0, 150, 0, 50),"ShowHitbox")
+local ShowFrameButton = createButtonPage2("ShowFrame:off",UDim2.new(0, 250, 0, 50),"ShowFrame")
+--booleans
+local showHitbox = false
+local showNames = false
+local showFrame = false
+--Functions
+local function ShowHitBoxOn()
+	ShowHitboxButton.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	ShowHitboxButton.Text = "ShowHitbox:on"
+
+	for _,v in game.Players:GetChildren() do
+		if v.Name ~= game.Players.LocalPlayer.Character.Name and not v.Character:FindFirstChild("Esp")  then
+			local highlight = Instance.new("Highlight",v.Character)
+			highlight.Name = "Esp"
+		end
+	end
+end
+
+local function ShowHitBoxOff()
+	ShowHitboxButton.BackgroundColor3 = Color3.new(0.701961, 0, 0) 
+	ShowHitboxButton.Text = "ShowHitbox:off"
+	for _,v in game.Players:GetChildren() do
+		if v.Name ~= game.Players.LocalPlayer.Character.Name and v.Character:FindFirstChild("Esp")  then
+			v.Character:FindFirstChild("Esp"):Destroy()
+		end
+	end
+end
+
+local function ShowNameOn()
+	ShowNameButton.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	ShowNameButton.Text = "ShowName:on"
+	for _,v in game.Players:GetChildren() do
+		if v.Name ~= game.Players.LocalPlayer.Character.Name and not v.Character.Head:FindFirstChild("PlayerNameA") then
+			local billboardGui = Instance.new("BillboardGui")
+			billboardGui.Name = "PlayerNameA"
+			billboardGui.Size = UDim2.new(0, 200, 0, 50) 
+			billboardGui.StudsOffset = Vector3.new(0, 3, 0)  
+			billboardGui.AlwaysOnTop = true  
+			billboardGui.Parent = v.Character:WaitForChild("Head")  
+
+			local nameLabel = Instance.new("TextLabel")
+			nameLabel.Size = UDim2.new(1, 0, 1, 0)  
+			nameLabel.BackgroundTransparency = 1  
+			nameLabel.Text = v.Character.Name  
+			nameLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+			local newUiStroke = Instance.new("UIStroke",nameLabel)
+			newUiStroke.Color = Color3.new(1, 1, 1)
+			newUiStroke.Thickness = 3
+
+			nameLabel.Font = Enum.Font.SourceSansBold
+			nameLabel.TextSize = 18  
+			nameLabel.Parent = billboardGui
+		end
+	end
+end
+
+local function ShowNameOff()
+	ShowNameButton.BackgroundColor3 = Color3.new(0.701961, 0, 0) 
+	ShowNameButton.Text = "ShowName:off"
+	for _,v in game.Players:GetChildren() do
+		if v.Name ~= game.Players.LocalPlayer.Character.Name and v.Character.Head:FindFirstChild("PlayerNameA") then
+			v.Character.Head:FindFirstChild("PlayerNameA"):Destroy()
+		end
+	end
+end
+
+local function ShowFrameOn()
+	ShowFrameButton.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+	ShowFrameButton.Text = "ShowFrame:on"
+
+	for _,v in game.Players:GetChildren() do
+		if v.Name ~= game.Players.LocalPlayer.Character.Name and not v.Character.HumanoidRootPart:FindFirstChild("ProportionalBlueRectangle")  then
+			local rectangleBillboard = Instance.new("BillboardGui")
+			rectangleBillboard.Name = "ProportionalBlueRectangle"
+			rectangleBillboard.Size = UDim2.new(8, 0, 12, 0)  
+			rectangleBillboard.StudsOffset = Vector3.new(0, -1, 0)  
+			rectangleBillboard.AlwaysOnTop = true  
+			rectangleBillboard.Parent = v.Character:WaitForChild("HumanoidRootPart")  
+
+
+			local transparentFrame = Instance.new("Frame")
+			transparentFrame.Size = UDim2.new(1, 0, 1, 0) 
+			transparentFrame.BackgroundTransparency = 1  
+			transparentFrame.Parent = rectangleBillboard
+
+
+			local borderStroke = Instance.new("UIStroke")
+			borderStroke.Thickness = 3  
+			borderStroke.Color = Color3.fromRGB(0, 0, 255)  
+			borderStroke.Parent = transparentFrame
+		end
+	end
+end
+
+local function ShowFrameOff()
+	ShowFrameButton.BackgroundColor3 = Color3.new(0.701961, 0, 0) 
+	ShowFrameButton.Text = "ShowFrame:off"
+	for _,v in game.Players:GetChildren() do
+		if v.Name ~= game.Players.LocalPlayer.Character.Name and v.Character.HumanoidRootPart:FindFirstChild("ProportionalBlueRectangle") then
+			v.Character.HumanoidRootPart:FindFirstChild("ProportionalBlueRectangle"):Destroy()
+		end
+	end
+end
+
+--Clicked
+local Clicked1 = 0
+local Clicked2 = 0
+local Clicked3 = 0
+
+ShowNameButton.MouseButton1Click:Connect(function()
+	Clicked1 += 1
+	if Clicked1 == 1 then
+		showNames = true
+		ShowNameOn()
+	else
+		ShowNameOff()
+		Clicked1 = 0
+		showNames = false
+	end
+end)
+
+ShowHitboxButton.MouseButton1Click:Connect(function()
+	Clicked2 += 1
+	if Clicked2 == 1 then
+		showHitbox = true
+		ShowHitBoxOn()
+	else
+		ShowHitBoxOff()
+		showHitbox = false
+		Clicked2 = 0
+	end
+end)
+
+ShowFrameButton.MouseButton1Click:Connect(function()
+	Clicked3 += 1
+	if Clicked3 == 1 then
+		showFrame = true
+		ShowFrameOn()
+	else
+		showFrame = false
+		ShowFrameOff()
+		Clicked3 = 0
+	end
+end)
+local RefreshCooldown = false
+
+local function RefreshAll()
+	if showFrame  then
+		ShowFrameOff()
+	end
+
+	if showNames then
+		ShowNameOff()
+	end
+
+	if showHitbox then
+		ShowHitBoxOff()
+	end
+
+	task.wait()
+	
+	if showFrame  then
+		ShowFrameOn()
+	end
+
+	if showNames then
+		ShowNameOn()
+	end
+
+	if showHitbox then
+		ShowHitBoxOn()
+	end
+end
+
+game["Run Service"].Heartbeat:Connect(function()
+	for _,v in game.Players:GetChildren() do
+		if v.Character.Humanoid.Health == 0 and not RefreshCooldown then
+			RefreshCooldown = true
+			print("Dead")
+			task.wait(5.5)
+			RefreshCooldown = false
+			RefreshAll()
+		end
+	end
+end)
