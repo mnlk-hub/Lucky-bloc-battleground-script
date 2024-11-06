@@ -613,3 +613,11 @@ game["Run Service"].Heartbeat:Connect(function()
 		end
 	end
 end)
+
+game.Players.PlayerAdded:Connect(function()
+	RefreshAll()
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+	RefreshAll()
+end)
