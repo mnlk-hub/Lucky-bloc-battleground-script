@@ -619,7 +619,7 @@ game["Run Service"].Heartbeat:Connect(function()
 			else
 				game.StarterGui:SetCore("SendNotification", {
 					Title ="nooo the king "..v.Name.." Died" ; 
-					Text = "venge yourself boss "..v.Name.."kill all those noobs"; 
+					Text = "venge yourself boss "..v.Name.." kill all those noobs"; 
 					Duration = 5;
 				})
 				local sound2 = Instance.new("Sound",game.Players.LocalPlayer.Character.Head)
@@ -639,8 +639,8 @@ game.Players.PlayerAdded:Connect(function(player)
 		RefreshCooldown2 = true
 	RefreshAll()
 	game.StarterGui:SetCore("SendNotification", {
-			Title = "OMG"..player.Name.."Joined" ; 
-			Text = "Say hi to"..player.Name; 
+			Title = "OMG "..player.Name.." Joined" ; 
+			Text = "Say hi to "..player.Name; 
 				Duration = 5;
 	})
 	task.wait(.1)
@@ -653,8 +653,8 @@ game.Players.PlayerRemoving:Connect(function(player)
 		RefreshCooldown3 = true
 	RefreshAll()
 	game.StarterGui:SetCore("SendNotification", {
-		Title = "ez bozo"..player.Name.."Left the game 🤡" ; 
-		Text = "ez"..player.Name.."Little shit"; 
+		Title = "ez bozo "..player.Name.." Left the game 🤡" ; 
+		Text = "ez "..player.Name.." Little shit"; 
 		Duration = 5;
 	})
 	task.wait(.1)
