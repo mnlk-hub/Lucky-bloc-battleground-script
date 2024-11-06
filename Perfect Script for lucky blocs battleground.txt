@@ -425,9 +425,12 @@ end
 
 --execute functions
 local EspTitle = CreateTitle("Esp: ","EspTitle",UDim2.new(0, 0,.06, 0)) 
+local Opcheats = CreateTitle("opCheats: ","OpTitle",UDim2.new(0, 0,.3, 0)) 
 local ShowNameButton = createButtonPage2("ShowName:off",UDim2.new(0, 50, 0, 50),"ShowName")
 local ShowHitboxButton = createButtonPage2("ShowHitbox:off",UDim2.new(0, 150, 0, 50),"ShowHitbox")
 local ShowFrameButton = createButtonPage2("ShowFrame:off",UDim2.new(0, 250, 0, 50),"ShowFrame")
+local CtrlTp = createButtonPage2("CtrlTp:Off",UDim2.new(0,90, 0, 120),"CtrlTpButton")
+local Aimbot = createButtonPage2("Aimbot:Off",UDim2.new(0,190, 0, 120),"AimbotButton")
 --booleans
 local showHitbox = false
 local showNames = false
@@ -536,6 +539,8 @@ end
 local Clicked1 = 0
 local Clicked2 = 0
 local Clicked3 = 0
+local Clicked4 = 0
+local Clicked5 = 0
 
 ShowNameButton.MouseButton1Click:Connect(function()
 	Clicked1 += 1
@@ -572,6 +577,66 @@ ShowFrameButton.MouseButton1Click:Connect(function()
 		Clicked3 = 0
 	end
 end)
+local CtrlTpOn = false
+CtrlTp.MouseButton1Click:Connect(function()
+	Clicked4 += 1
+	if Clicked4 == 1 then
+		CtrlTp.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+		CtrlTpOn = true
+		CtrlTp.Text = "CtrlTp:On"
+	else
+		CtrlTp.BackgroundColor3 = Color3.new(0.701961, 0, 0) 
+		CtrlTpOn = false
+		Clicked4 = 0
+		CtrlTp.Text = "CtrlTp:Off"
+	end
+end)
+
+local CtrlPushed = false
+local RightClickedPressed = false
+local AimbotOn = false
+
+Aimbot.MouseButton1Click:Connect(function()
+	Clicked5 += 1
+	if Clicked5 == 1 then
+		AimbotOn = true
+		Aimbot.BackgroundColor3 = Color3.new(0.3, 0, 1) 
+		Aimbot.Text = "Aimbot:On"
+	else
+		Aimbot.BackgroundColor3 = Color3.new(0.701961, 0, 0) 
+		Aimbot.Text = "Aimbot:Off"
+		AimbotOn = false
+		Clicked5 = 0
+	end
+end)
+
+uis.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.LeftControl and CtrlTpOn then
+		CtrlPushed = true
+	end
+	
+	if CtrlPushed and input.UserInputType == Enum.UserInputType.MouseButton1 then
+		game.Players.LocalPlayer.Character:MoveTo(game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,2,0))
+	end
+	
+	if input.UserInputType == Enum.UserInputType.MouseButton2 and AimbotOn then
+		RightClickedPressed = true
+	end
+	
+end)
+
+uis.InputEnded:Connect(function(input)
+	
+	if input.KeyCode == Enum.KeyCode.LeftControl and CtrlTpOn then
+		CtrlPushed = false
+	end
+	
+	if input.UserInputType == Enum.UserInputType.MouseButton2 and AimbotOn then
+		RightClickedPressed = false
+	end
+	
+end)
+
 local RefreshCooldown = false
 
 local function RefreshAll()
@@ -601,8 +666,9 @@ local function RefreshAll()
 		ShowHitBoxOn()
 	end
 end
-
+local Notif = false
 game["Run Service"].Heartbeat:Connect(function()
+	
 	for _,v in game.Players:GetChildren() do
 		if v.Character.Humanoid.Health == 0 and not RefreshCooldown then
 			RefreshCooldown = true
@@ -633,7 +699,51 @@ game["Run Service"].Heartbeat:Connect(function()
 			RefreshAll()
 		end
 	end
+	
+	if RightClickedPressed  then
+		local player = game.Players.LocalPlayer
+		local character = player.Character or player.CharacterAdded:Wait()
+		local playerRoot = character:WaitForChild("HumanoidRootPart")
+
+		local closestPlayer = nil
+		local shortestDistance = math.huge
+
+		for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+			if otherPlayer ~= player then
+				local otherCharacter = otherPlayer.Character
+				if otherCharacter and otherCharacter:FindFirstChild("HumanoidRootPart") then
+					local otherRoot = otherCharacter.HumanoidRootPart
+					local distance = (playerRoot.Position - otherRoot.Position).magnitude
+					
+					if distance < shortestDistance then
+						shortestDistance = distance
+						closestPlayer = otherPlayer
+					end
+					
+				end
+			end
+		end
+	
+		if closestPlayer then
+			local camera = game.Workspace.Camera
+			camera.CFrame = CFrame.new(camera.CFrame.Position,closestPlayer.Character.Head.Position)
+		else
+			if not Notif then
+				Notif = true
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "NO PLAYERS" ; 
+				Text = "blud you're alone"; 
+				Duration = 1;
+			})
+			task.wait(1)
+				Notif = false
+			end
+			
+		end
+	end
+	
 end)
+
 local RefreshCooldown2 = false
 game.Players.PlayerAdded:Connect(function(player)
 	if not RefreshCooldown2 then
