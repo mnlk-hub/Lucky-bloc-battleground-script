@@ -606,7 +606,27 @@ game["Run Service"].Heartbeat:Connect(function()
 	for _,v in game.Players:GetChildren() do
 		if v.Character.Humanoid.Health == 0 and not RefreshCooldown then
 			RefreshCooldown = true
-			print("Dead")
+			local sound2 = Instance.new("Sound",game.Players.LocalPlayer.Character.Head)
+			sound2.SoundId = "6308606116"
+			sound2.Volume = 6
+			sound2:Play()
+			if v.Name ~= "roblox_100919" then
+			game.StarterGui:SetCore("SendNotification", {
+				Title = v.Name.." Died" ; 
+				Text = "ez "..v.Name.." noob just died"; 
+				Duration = 1;
+			})
+			else
+				game.StarterGui:SetCore("SendNotification", {
+					Title ="nooo the king "..v.Name.." Died" ; 
+					Text = "venge yourself boss "..v.Name.."kill all those noobs"; 
+					Duration = 1;
+				})
+				local sound2 = Instance.new("Sound",game.Players.LocalPlayer.Character.Head)
+				sound2.SoundId = "9125644905"
+				sound2.Volume = 6
+				sound2:Play()
+			end
 			task.wait(5.5)
 			RefreshCooldown = false
 			RefreshAll()
