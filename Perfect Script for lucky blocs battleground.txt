@@ -614,10 +614,20 @@ game["Run Service"].Heartbeat:Connect(function()
 	end
 end)
 
-game.Players.PlayerAdded:Connect(function()
+game.Players.PlayerAdded:Connect(function(player)
 	RefreshAll()
+	game.StarterGui:SetCore("SendNotification", {
+			Title = "OMG"..player.Name.."Joined" ; 
+			Text = "Say hi to"..player.Name; 
+				Duration = 2;
+		})
 end)
 
-game.Players.PlayerRemoving:Connect(function()
+game.Players.PlayerRemoving:Connect(function(player)
 	RefreshAll()
+	game.StarterGui:SetCore("SendNotification", {
+		Title = "ez bozo"..player.Name.."Left the game 🤡" ; 
+		Text = "ez"..player.Name.."Little shit"; 
+		Duration = 2;
+	})
 end)
