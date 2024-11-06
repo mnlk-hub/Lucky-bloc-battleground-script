@@ -654,8 +654,8 @@ game.Players.PlayerRemoving:Connect(function(player)
 		RefreshCooldown3 = true
 		RefreshAll()
 		game.StarterGui:SetCore("SendNotification", {
-			Title = "ez bozo "..player.Name.." Left the game 🤡" ; 
-			Text = "ez "..player.Name.." Little shit"; 
+			Title = "ez bozo!! "..player.Name.." Left the game!! 🤡" ; 
+			Text = "ez "..player.Name.." Little shit you left"; 
 			Duration = 5;
 		})
 		task.wait(.1)
