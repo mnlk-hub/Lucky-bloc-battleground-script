@@ -614,13 +614,13 @@ game["Run Service"].Heartbeat:Connect(function()
 			game.StarterGui:SetCore("SendNotification", {
 				Title = v.Name.." Died" ; 
 				Text = "ez "..v.Name.." noob just died"; 
-				Duration = 1;
+				Duration = 5;
 			})
 			else
 				game.StarterGui:SetCore("SendNotification", {
 					Title ="nooo the king "..v.Name.." Died" ; 
 					Text = "venge yourself boss "..v.Name.."kill all those noobs"; 
-					Duration = 1;
+					Duration = 5;
 				})
 				local sound2 = Instance.new("Sound",game.Players.LocalPlayer.Character.Head)
 				sound2.SoundId = "9125644905"
@@ -633,21 +633,31 @@ game["Run Service"].Heartbeat:Connect(function()
 		end
 	end
 end)
-
+local RefreshCooldown2 = false
 game.Players.PlayerAdded:Connect(function(player)
+	if not RefreshCooldown2 then
+		RefreshCooldown2 = true
 	RefreshAll()
 	game.StarterGui:SetCore("SendNotification", {
 			Title = "OMG"..player.Name.."Joined" ; 
 			Text = "Say hi to"..player.Name; 
-				Duration = 2;
-		})
+				Duration = 5;
+	})
+	task.wait(.1)
+	RefreshCooldown2 = false
+	end
 end)
-
+local RefreshCooldown3 = false
 game.Players.PlayerRemoving:Connect(function(player)
+	if not RefreshCooldown3 then
+		RefreshCooldown3 = true
 	RefreshAll()
 	game.StarterGui:SetCore("SendNotification", {
 		Title = "ez bozo"..player.Name.."Left the game 🤡" ; 
 		Text = "ez"..player.Name.."Little shit"; 
-		Duration = 2;
+		Duration = 5;
 	})
+	task.wait(.1)
+		RefreshCooldown3 = false
+	end
 end)
