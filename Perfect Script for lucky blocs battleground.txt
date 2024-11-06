@@ -26,14 +26,14 @@ sound.SoundId = "rbxassetid://8486683243"
 sound.Volume = 10
 sound:Play()
 
---if not FirstTime  then
---	game.StarterGui:SetCore("SendNotification", {
---		Title = "Code well injected"; 
---		Text = "Welcome to "..HubName.."💉😈"; 
---		Duration = 5;
---	})
---	FirstTime = true
---end
+if not FirstTime  then
+	game.StarterGui:SetCore("SendNotification", {
+		Title = "Code well injected"; 
+		Text = "Welcome to "..HubName.."💉😈"; 
+		Duration = 5;
+	})
+	FirstTime = true
+end
 
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  
@@ -711,9 +711,9 @@ game["Run Service"].Heartbeat:Connect(function()
 		for _, otherPlayer in pairs(game.Players:GetPlayers()) do
 			if otherPlayer ~= player then
 				local otherCharacter = otherPlayer.Character
-				if otherCharacter and otherCharacter:FindFirstChild("HumanoidRootPart") then
+				if otherCharacter and otherCharacter:FindFirstChild("HumanoidRootPart") and otherCharacter.Humanoid.Health ~= 0 then
 					local otherRoot = otherCharacter.HumanoidRootPart
-					local distance = (playerRoot.Position - otherRoot.Position).magnitude
+					local distance = (player:GetMouse().Hit.Position - otherRoot.Position).magnitude
 					
 					if distance < shortestDistance then
 						shortestDistance = distance
